@@ -76,11 +76,25 @@ def run_code_in_container(
         'success': False,
         'stdout': '',
         'stderr': '',
-        'error': None
+        'error': None,
+        'safe': True
     }
+
     language = language.lower()
     compile_cmd = []
     run_cmd = []
+
+    from safe import check_code_safety
+    code = open(file_path, 'r').read()
+
+    safety = check_code_safety(file_path, language)
+    logging.info(f"Code safety check result: {safety}")
+
+    if not safety['success']:
+        result['error'] = 'Code safety check failed: ' + safety['reason']
+        result['safe'] = False
+        return result
+
 
     # Set up the correct command for each language
     if language == 'python':

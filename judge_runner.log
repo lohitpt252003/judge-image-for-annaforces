@@ -116,3 +116,74 @@
 2025-08-17 12:49:22,363 INFO Image 'judge-image:latest' already exists.
 2025-08-17 12:49:23,994 INFO Deleted folder 'test'.
 2025-08-17 12:49:23,995 INFO Deleted folder '__pycache__'.
+2025-08-17 13:13:47,767 INFO Created folder 'test' and file 'main.cpp'.
+2025-08-17 13:13:47,791 INFO Image 'judge-image:latest' already exists.
+2025-08-17 13:13:49,659 INFO Deleted folder 'test'.
+2025-08-17 13:13:49,660 INFO Deleted folder '__pycache__'.
+2025-08-17 13:14:26,737 INFO Created folder 'test' and file 'main.cpp'.
+2025-08-17 13:14:26,751 INFO Image 'judge-image:latest' already exists.
+2025-08-17 13:14:28,673 INFO Deleted folder 'test'.
+2025-08-17 13:14:28,674 INFO Deleted folder '__pycache__'.
+2025-08-17 13:14:28,674 INFO Created folder 'test' and file 'main.py'.
+2025-08-17 13:14:28,692 INFO Image 'judge-image:latest' already exists.
+2025-08-17 13:14:29,698 INFO Deleted folder 'test'.
+2025-08-17 13:14:29,698 INFO Folder '__pycache__' does not exist; nothing to delete.
+2025-08-17 13:14:45,122 INFO Created folder 'test' and file 'main.py'.
+2025-08-17 13:14:45,145 INFO Image 'judge-image:latest' already exists.
+2025-08-17 13:14:45,519 INFO Deleted folder '__pycache__'.
+2025-08-17 13:15:40,803 INFO Created folder 'test' and file 'main.py'.
+2025-08-17 13:15:40,818 INFO Image 'judge-image:latest' already exists.
+2025-08-17 13:15:41,150 INFO Deleted folder '__pycache__'.
+2025-08-17 13:16:23,269 INFO Created folder 'test' and file 'main.py'.
+2025-08-17 13:16:23,282 INFO Image 'judge-image:latest' already exists.
+2025-08-17 13:16:23,711 INFO Deleted folder '__pycache__'.
+2025-08-17 13:16:46,232 INFO Created folder 'test' and file 'main.py'.
+2025-08-17 13:16:46,247 INFO Image 'judge-image:latest' already exists.
+2025-08-17 13:16:46,602 INFO Deleted folder '__pycache__'.
+2025-08-17 13:19:25,473 INFO Created folder 'test' and file 'main.py'.
+2025-08-17 13:19:25,486 INFO Image 'judge-image:latest' already exists.
+2025-08-17 13:19:25,818 INFO Deleted folder '__pycache__'.
+2025-08-17 13:19:36,607 INFO Created folder 'test' and file 'main.py'.
+2025-08-17 13:19:36,621 INFO Image 'judge-image:latest' already exists.
+2025-08-17 13:19:36,971 INFO Deleted folder '__pycache__'.
+2025-08-17 13:19:46,370 INFO Created folder 'test' and file 'main.py'.
+2025-08-17 13:19:46,384 INFO Image 'judge-image:latest' already exists.
+2025-08-17 13:27:40,632 INFO Created folder 'test' and file 'main.py'.
+2025-08-17 13:27:40,646 INFO Image 'judge-image:latest' already exists.
+2025-08-17 13:28:42,869 INFO Created folder 'test' and file 'mai.py'.
+2025-08-17 13:28:42,882 INFO Image 'judge-image:latest' already exists.
+2025-08-17 13:28:59,166 INFO Created folder 'test' and file 'mai.py'.
+2025-08-17 13:28:59,180 INFO Image 'judge-image:latest' already exists.
+2025-08-17 13:29:09,324 INFO Created folder 'test' and file 'mai.py'.
+2025-08-17 13:29:09,338 INFO Image 'judge-image:latest' already exists.
+2025-08-17 13:49:06,804 INFO Created folder 'test' and file 'mai.py'.
+2025-08-17 13:49:06,817 INFO Image 'judge-image:latest' already exists.
+2025-08-17 13:49:43,776 INFO Created folder 'test' and file 'main.cpp'.
+2025-08-17 13:49:43,798 INFO Image 'judge-image:latest' already exists.
+2025-08-17 13:49:55,248 INFO Created folder 'test' and file 'main.cpp'.
+2025-08-17 13:49:55,262 INFO Image 'judge-image:latest' already exists.
+2025-08-17 14:05:55,170 INFO Created folder 'test' and file 'main.cpp'.
+2025-08-17 14:05:55,184 INFO Image 'judge-image:latest' already exists.
+2025-08-17 14:05:55,184 INFO Code safety check result: {'success': False, 'reason': 'Cannot read file: [Errno 2] No such file or directory: \'#include <bits/stdc++.h>\\nusing namespace std;\\nint main() {\\n    cout << "Hello, World!\\\\n";\\n    string str; cin >> str; cout << str << endl; return 0;\\n}\\n\''}
+2025-08-17 14:06:25,284 INFO Created folder 'test' and file 'main.cpp'.
+2025-08-17 14:06:25,297 INFO Image 'judge-image:latest' already exists.
+2025-08-17 14:06:25,298 INFO Code safety check result: {'success': False, 'reason': 'Cannot read file: [Errno 2] No such file or directory: \'#include <bits/stdc++.h>\\nusing namespace std;\\nint main() {\\n    cout << "Hello, World!\\\\n";\\n    string str; cin >> str; cout << str << endl; return 0;\\n}\\n\''}
+2025-08-17 14:07:17,953 INFO Created folder 'test' and file 'main.cpp'.
+2025-08-17 14:07:17,967 INFO Image 'judge-image:latest' already exists.
+2025-08-17 14:07:17,968 INFO Code safety check result: {'success': True, 'reason': 'Code passed static check'}
+2025-08-17 14:08:09,876 INFO Created folder 'test' and file 'main.cpp'.
+2025-08-17 14:08:09,890 INFO Image 'judge-image:latest' already exists.
+2025-08-17 14:08:09,890 INFO Code safety check result: {'success': True, 'reason': 'Code passed static check'}
+2025-08-17 14:08:26,525 INFO Created folder 'test' and file 'mai.py'.
+2025-08-17 14:08:26,556 INFO Image 'judge-image:latest' already exists.
+2025-08-17 14:08:26,556 INFO Code safety check result: {'success': False, 'reason': 'Blocked keyword matched: \\bimport\\s+os\\b'}
+2025-08-17 14:09:00,834 INFO Created folder 'test' and file 'mai.py'.
+2025-08-17 14:09:00,848 INFO Image 'judge-image:latest' already exists.
+2025-08-17 14:09:00,849 INFO Code safety check result: {'success': False, 'reason': 'Blocked keyword matched: \\bimport\\s+os\\b'}
+2025-08-17 14:09:00,849 INFO Deleted folder 'test'.
+2025-08-17 14:09:00,850 INFO Deleted folder '__pycache__'.
+2025-08-17 14:09:44,543 INFO Created folder 'test' and file 'mai.py'.
+2025-08-17 14:09:44,567 INFO Image 'judge-image:latest' already exists.
+2025-08-17 14:09:44,571 INFO Code safety check result: {'success': False, 'reason': 'Blocked keyword matched: \\bimport\\s+os\\b'}
+2025-08-17 14:09:44,573 INFO Deleted folder 'test'.
+2025-08-17 14:09:44,573 INFO Deleted folder '__pycache__'.
