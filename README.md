@@ -10,6 +10,47 @@ This project provides a Python script that allows you to compile and execute cod
 - **Automatic Docker image management**: Builds the judge image if not present
 - **Logging**: Outputs events and errors to `judge_runner.log`
 - **Easy file management**: Functions to create, delete, and manage test files
+- **Static Safety Checks**: Blocks forbidden imports and system calls before execution
+
+## Forbidden Keywords and Headers
+
+To ensure security and sandboxing, the following imports, includes, and functions are **blocked** and will prevent code execution if found:
+
+### Python
+
+- `import os`
+- `import subprocess`
+- `import shutil`
+- `import socket`
+- `import ctypes`
+- `import pathlib`
+- `from os`
+- `open(`
+
+### C
+
+- `#include <unistd.h>`
+- `#include <sys/` (e.g., sys/socket.h, sys/wait.h)
+- `#include <dlfcn.h>`
+- `system(`
+- `popen(`
+- `fork(`
+- `exec`
+
+### C++
+
+- `#include <unistd.h>`
+- `#include <sys/`
+- `#include <dlfcn.h>`
+- `system(`
+- `popen(`
+- `fork(`
+- `exec`
+- `#include <filesystem>`
+
+If any of these patterns are detected in your code, execution will be blocked for safety reasons.
+
+---
 
 ## Usage
 

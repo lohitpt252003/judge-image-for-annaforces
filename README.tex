@@ -18,17 +18,49 @@ This project provides a Python script that allows you to compile and execute cod
     \item \textbf{Automatic Docker image management}: Builds the judge image if not present
     \item \textbf{Logging}: Outputs events and errors to \texttt{judge\_runner.log}
     \item \textbf{Easy file management}: Functions to create, delete, and manage test files
+    \item \textbf{Static Safety Checks}: Blocks forbidden imports and system calls before execution
 \end{itemize}
 
-\section*{Usage}
+\section*{Forbidden Keywords and Headers}
 
-\subsection*{1. Prerequisites}
+To ensure security and sandboxing, the following imports, includes, and functions are \textbf{blocked} and will prevent code execution if found:
+
+\subsection*{Python}
 \begin{itemize}
-    \item Docker must be installed and running on your system.
-    \item Python 3.x
+    \item \texttt{import os}
+    \item \texttt{import subprocess}
+    \item \texttt{import shutil}
+    \item \texttt{import socket}
+    \item \texttt{import ctypes}
+    \item \texttt{import pathlib}
+    \item \texttt{from os}
+    \item \texttt{open(}
 \end{itemize}
 
-\newpage
+\subsection*{C}
+\begin{itemize}
+    \item \texttt{\#include <unistd.h>}
+    \item \texttt{\#include <sys/} (e.g., sys/socket.h, sys/wait.h)
+    \item \texttt{\#include <dlfcn.h>}
+    \item \texttt{system(}
+    \item \texttt{popen(}
+    \item \texttt{fork(}
+    \item \texttt{exec}
+\end{itemize}
+
+\subsection*{C++}
+\begin{itemize}
+    \item \texttt{\#include <unistd.h>}
+    \item \texttt{\#include <sys/}
+    \item \texttt{\#include <dlfcn.h>}
+    \item \texttt{system(}
+    \item \texttt{popen(}
+    \item \texttt{fork(}
+    \item \texttt{exec}
+    \item \texttt{\#include <filesystem>}
+\end{itemize}
+
+If any of these patterns are detected in your code, execution will be blocked for safety reasons.
 
 \section*{Defaults}
 \begin{longtable}{|p{4cm}|p{5cm}|p{6cm}|}
@@ -46,6 +78,14 @@ Default Memory Limit & 1024 MB & Max memory allowed in container \\
 Logging File & \texttt{judge\_runner.log} & Log file for execution events/errors \\
 \hline
 \end{longtable}
+
+\section*{Usage}
+
+\subsection*{1. Prerequisites}
+\begin{itemize}
+    \item Docker must be installed and running on your system.
+    \item Python 3.x
+\end{itemize}
 
 \subsection*{2. Quick Start}
 Clone the repository and run the script:
