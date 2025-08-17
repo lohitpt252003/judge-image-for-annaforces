@@ -1,0 +1,41 @@
+2025-08-17 11:23:24,552 INFO Created folder 'test' and file 'main.py'.
+2025-08-17 11:23:24,565 INFO Image 'judge-image:latest' already exists.
+2025-08-17 11:23:24,565 INFO Preparing to run code: file=test/main.py, language=python, image=judge-image:latest
+2025-08-17 11:23:24,566 INFO Copied 'test/main.py' to sandbox '/tmp/tmpkecq_814'.
+2025-08-17 11:23:24,566 INFO Run command: docker run --rm -i --network none --memory=1024m --cpus=1 --device-read-bps /dev/sda:10mb --user 65534:65534 -v /tmp/tmpkecq_814:/sandbox/temp -w /sandbox/temp judge-image:latest python3 main.py
+2025-08-17 11:23:24,802 ERROR Run error: Run error: Command '['docker', 'run', '--rm', '-i', '--network', 'none', '--memory=1024m', '--cpus=1', '--device-read-bps', '/dev/sda:10mb', '--user', '65534:65534', '-v', '/tmp/tmpkecq_814:/sandbox/temp', '-w', '/sandbox/temp', 'judge-image:latest', 'python3', 'main.py']' returned non-zero exit status 2.
+2025-08-17 11:23:24,803 INFO Result: {'success': False, 'stdout': '', 'stderr': "python3: can't open file '/sandbox/temp/main.py': [Errno 13] Permission denied\n", 'error': "Run error: Command '['docker', 'run', '--rm', '-i', '--network', 'none', '--memory=1024m', '--cpus=1', '--device-read-bps', '/dev/sda:10mb', '--user', '65534:65534', '-v', '/tmp/tmpkecq_814:/sandbox/temp', '-w', '/sandbox/temp', 'judge-image:latest', 'python3', 'main.py']' returned non-zero exit status 2."}
+2025-08-17 11:23:24,803 INFO Deleted folder 'test'.
+2025-08-17 11:24:28,729 INFO Created folder 'test' and file 'main.py'.
+2025-08-17 11:24:28,746 INFO Image 'judge-image:latest' already exists.
+2025-08-17 11:24:28,746 INFO Preparing to run code: file=test/main.py, language=python, image=judge-image:latest
+2025-08-17 11:24:28,747 ERROR Error copying file: name 'stat' is not defined
+2025-08-17 11:24:28,749 INFO Deleted folder 'test'.
+2025-08-17 11:25:26,432 INFO Created folder 'test' and file 'main.py'.
+2025-08-17 11:25:26,446 INFO Image 'judge-image:latest' already exists.
+2025-08-17 11:25:26,446 INFO Preparing to run code: file=test/main.py, language=python, image=judge-image:latest
+2025-08-17 11:25:26,447 INFO Copied 'test/main.py' to sandbox '/tmp/tmpoq39m6ro' and set permissions.
+2025-08-17 11:25:26,447 INFO Run command: docker run --rm -i --network none --memory=1024m --cpus=1 --device-read-bps /dev/sda:10mb --user 65534:65534 -v /tmp/tmpoq39m6ro:/sandbox/temp -w /sandbox/temp judge-image:latest python3 main.py
+2025-08-17 11:25:26,690 ERROR Run error: Run error: Command '['docker', 'run', '--rm', '-i', '--network', 'none', '--memory=1024m', '--cpus=1', '--device-read-bps', '/dev/sda:10mb', '--user', '65534:65534', '-v', '/tmp/tmpoq39m6ro:/sandbox/temp', '-w', '/sandbox/temp', 'judge-image:latest', 'python3', 'main.py']' returned non-zero exit status 2.
+2025-08-17 11:25:26,690 INFO Result: {'success': False, 'stdout': '', 'stderr': "python3: can't open file '/sandbox/temp/main.py': [Errno 13] Permission denied\n", 'error': "Run error: Command '['docker', 'run', '--rm', '-i', '--network', 'none', '--memory=1024m', '--cpus=1', '--device-read-bps', '/dev/sda:10mb', '--user', '65534:65534', '-v', '/tmp/tmpoq39m6ro:/sandbox/temp', '-w', '/sandbox/temp', 'judge-image:latest', 'python3', 'main.py']' returned non-zero exit status 2."}
+2025-08-17 11:25:26,691 INFO Deleted folder 'test'.
+2025-08-17 11:25:53,709 INFO Created folder 'test' and file 'main.py'.
+2025-08-17 11:25:53,723 INFO Image 'judge-image:latest' already exists.
+2025-08-17 11:25:53,723 INFO Preparing to run code: file=test/main.py, language=python, image=judge-image:latest
+2025-08-17 11:25:53,724 INFO Copied 'test/main.py' to sandbox '/tmp/tmpi5kcnq7u' and set permissions.
+2025-08-17 11:25:53,724 INFO Run command: docker run --rm -i --network none --memory=1024m --cpus=1 --device-read-bps /dev/sda:10mb --user 65534:65534 -v /tmp/tmpi5kcnq7u:/sandbox/temp -w /sandbox/temp judge-image:latest python3 main.py
+2025-08-17 11:25:53,940 ERROR Run error: Run error: Command '['docker', 'run', '--rm', '-i', '--network', 'none', '--memory=1024m', '--cpus=1', '--device-read-bps', '/dev/sda:10mb', '--user', '65534:65534', '-v', '/tmp/tmpi5kcnq7u:/sandbox/temp', '-w', '/sandbox/temp', 'judge-image:latest', 'python3', 'main.py']' returned non-zero exit status 2.
+2025-08-17 11:25:53,940 INFO Result: {'success': False, 'stdout': '', 'stderr': "python3: can't open file '/sandbox/temp/main.py': [Errno 13] Permission denied\n", 'error': "Run error: Command '['docker', 'run', '--rm', '-i', '--network', 'none', '--memory=1024m', '--cpus=1', '--device-read-bps', '/dev/sda:10mb', '--user', '65534:65534', '-v', '/tmp/tmpi5kcnq7u:/sandbox/temp', '-w', '/sandbox/temp', 'judge-image:latest', 'python3', 'main.py']' returned non-zero exit status 2."}
+2025-08-17 11:26:57,058 INFO Created folder 'test' and file 'main.py'.
+2025-08-17 11:26:57,078 INFO Image 'judge-image:latest' already exists.
+2025-08-17 11:26:57,079 INFO Preparing to run code: file=test/main.py, language=python, image=judge-image:latest
+2025-08-17 11:26:57,080 INFO Copied 'test/main.py' to sandbox '/tmp/tmp7rtgzrqv' and set permissions.
+2025-08-17 11:26:57,080 INFO Run command: docker run --rm -i --network none --memory=1024m --cpus=1 --device-read-bps /dev/sda:10mb --user 65534:65534 -v /tmp/tmp7rtgzrqv:/sandbox/temp -w /sandbox/temp judge-image:latest python3 main.py
+2025-08-17 11:26:57,369 ERROR Run error: Run error: Command '['docker', 'run', '--rm', '-i', '--network', 'none', '--memory=1024m', '--cpus=1', '--device-read-bps', '/dev/sda:10mb', '--user', '65534:65534', '-v', '/tmp/tmp7rtgzrqv:/sandbox/temp', '-w', '/sandbox/temp', 'judge-image:latest', 'python3', 'main.py']' returned non-zero exit status 2.
+2025-08-17 11:26:57,369 INFO Result: {'success': False, 'stdout': '', 'stderr': "python3: can't open file '/sandbox/temp/main.py': [Errno 13] Permission denied\n", 'error': "Run error: Command '['docker', 'run', '--rm', '-i', '--network', 'none', '--memory=1024m', '--cpus=1', '--device-read-bps', '/dev/sda:10mb', '--user', '65534:65534', '-v', '/tmp/tmp7rtgzrqv:/sandbox/temp', '-w', '/sandbox/temp', 'judge-image:latest', 'python3', 'main.py']' returned non-zero exit status 2."}
+2025-08-17 11:26:57,373 INFO Deleted folder 'test'.
+2025-08-17 11:29:24,313 INFO Created folder 'test' and file 'main.py'.
+2025-08-17 11:29:24,327 INFO Image 'judge-image:latest' already exists.
+2025-08-17 11:29:47,933 INFO Created folder 'test' and file 'main.py'.
+2025-08-17 11:29:47,948 INFO Image 'judge-image:latest' already exists.
+2025-08-17 11:29:48,273 INFO Deleted folder 'test'.
