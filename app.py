@@ -2,8 +2,8 @@ import os
 import shutil
 import subprocess
 import tempfile
-import stat   # <-- Make sure this is imported!
 import logging
+
 
 # Setup logging
 logging.basicConfig(
@@ -19,6 +19,8 @@ IMAGE = f"{IMAGE_NAME}:{IMAGE_TAG}"
 
 TEST_FOLDER = "test"
 TEST_FILE = 'main.py'
+
+DEFAULT_COMILE_TIME_LIMIT = 5
 
 def create_folder_and_file(folder_name=TEST_FOLDER, file_name=TEST_FILE, content='print("\\t=== This is the default one\\n\\t=== Please change the code")'):
     try:
@@ -114,7 +116,7 @@ def run_code_in_container(
                     stdout=subprocess.PIPE,
                     stderr=subprocess.PIPE,
                     input=stdin.encode() if stdin else None,
-                    timeout=time_limit,
+                    timeout=DEFAULT_COMILE_TIME_LIMIT,
                     check=True
                 )
             except subprocess.CalledProcessError as e:
