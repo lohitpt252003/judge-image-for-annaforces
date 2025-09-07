@@ -1,274 +1,400 @@
 \documentclass{article}
-\usepackage[a4paper, margin=1in]{geometry}
+\usepackage[utf8]{inputenc}
 \usepackage{hyperref}
-\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
 \usepackage{listings}
-\usepackage{amssymb} % For the square symbol in the To-Do list
-\usepackage{tabularx}
-\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{tabularx} % For flexible table columns
 
-% Hyperlink setup
-\hypersetup{
-    colorlinks=true,
-    linkcolor=blue,
-    filecolor=magenta,
-    urlcolor=cyan,
-    pdftitle={Judge Image for Annaforces},
-}
-
-% Code listing style
-\definecolor{codegreen}{rgb}{0,0.6,0}
-\definecolor{codegray}{rgb}{0.5,0.5,0.5}
-\definecolor{codepurple}{rgb}{0.58,0,0.82}
-\definecolor{backcolour}{rgb}{0.95,0.95,0.95}
-
-\lstdefinestyle{mystyle}{
-    backgroundcolor=\color{backcolour},
-    commentstyle=\color{codegreen},
-    keywordstyle=\color{magenta},
-    numberstyle=\tiny\color{codegray},
-    stringstyle=\color{codepurple},
-    basicstyle=\footnotesize\ttfamily,
+% Define listing style for code blocks
+\lstset{
+    backgroundcolor=\color{gray!10},
+    basicstyle=\ttfamily\small,
     breakatwhitespace=false,
     breaklines=true,
     captionpos=b,
-    keepspaces=true,
-    numbers=none,
+    commentstyle=\color{green!50!black},
+    frame=single,
+    keywordstyle=\color{blue},
+    numbers=left,
     numbersep=5pt,
+    numberstyle=\tiny\color{gray},
+    rulecolor=\color{black},
     showspaces=false,
     showstringspaces=false,
     showtabs=false,
-    tabsize=2
-}
-\lstset{style=mystyle}
-
-% Custom JSON language definition for listings
-\lstdefinelanguage{json}{
-    basicstyle=\normalfont\ttfamily\footnotesize,
-    string=[s]{"}{"},
-    comment=[l]{:\ "},
-    commentstyle=\color{black},
-    morekeywords={true,false,null},
-    keywordstyle=\color{blue},
-    stringstyle=\color{codepurple},
-    showstringspaces=false
+    stringstyle=\color{red!50!black},
+    tabsize=2,
+    title=\lstname,
+    xleftmargin=0.75in,
+    xrightmargin=0.75in
 }
 
-% Title and author
-\title{Judge Image for Annaforces}
-\author{\href{https://opensource.org/licenses/MIT}{License: MIT}}
-\date{}
+\title{Code Execution Engine Documentation}
+\author{Lohit P Talavar, Adarsh Mishra, Priyashi Meena}
+\date{\today}
 
 \begin{document}
 
 \maketitle
 
-A secure and isolated environment for executing untrusted code, primarily for use in competitive programming platforms or online judges. It uses Docker to create a sandbox that restricts resource usage (CPU time, memory) and prevents malicious code from affecting the host system.
+\section*{Project Overview}
+This project is a simple and robust code execution engine built with Flask and Docker. It provides a secure environment to execute code in different languages with resource constraints (time and memory limits).
 
-\section{Features}
+\section*{Features}
 \begin{itemize}
-    \item \textbf{Language Support:} Executes code written in C, C++, and Python.
-    \item \textbf{Resource Limiting:} Enforces time and memory limits on code execution.
-    \item \textbf{Secure Sandboxing:} Uses Docker containers to isolate the execution environment.
-    \item \textbf{Detailed Results:} Provides detailed information about the execution, including:
-    \begin{itemize}
-        \item Standard output and standard error.
-        \item Execution time and memory usage.
-        \item Status (Success, Compilation Error, Runtime Error, Time Limit Exceeded, Memory Limit Exceeded).
-    \end{itemize}
+    \item \textbf{Secure Execution:} Code is executed in an isolated Docker container to prevent any harm to the host system.
+    \item \textbf{Language Support:} Supports C, C++, and Python.
+    \item \textbf{Resource Limits:} Enforces time and memory limits on code execution.
+    \item \textbf{Simple API:} A single API endpoint to submit code for execution.
+    \item \textbf{Comprehensive Test Suite:} Includes unit and API tests to ensure reliability.
 \end{itemize}
 
-\section{Getting Started}
+\section*{API Endpoint}
 
-\subsection{Prerequisites}
+\subsection*{`/api/execute`}
+This is the main endpoint to submit code for execution.
 \begin{itemize}
-    \item \textbf{Docker:} You must have Docker installed and running on your system.
+    \item \textbf{Method:} `POST`
+    \item \textbf{Content-Type:} `application/json`
 \end{itemize}
 
-\subsection{Installation}
-\begin{enumerate}
-    \item Clone the repository:
-    \begin{lstlisting}[language=bash]
-git clone https://github.com/lohitpt252003/judge-image-for-annaforces.git
-    \end{lstlisting}
-    \item Navigate to the project directory:
-    \begin{lstlisting}[language=bash]
-cd judge-image-for-annaforces
-    \end{lstlisting}
-\end{enumerate}
+\subsubsection*{Request Payload}
+\begin{tabularx}{\textwidth}{|l|l|l|X|}
+    \hline
+    \textbf{Field} & \textbf{Type} & \textbf{Required} & \textbf{Description} \\
+    \hline
+    `language` & string & Yes & The programming language (`c`, `c++`, `python`). \\
+    \hline
+    `code` & string & Yes & The source code to execute. \\
+    \hline
+    `stdin` & string & No & Standard input for the code. Defaults to empty. \\
+    \hline
+    `timelimit` & integer & No & Time limit in seconds. Defaults to 2. \\
+    \hline
+    `memorylimit` & integer & No & Memory limit in megabytes. Defaults to 1024. \\
+    \hline
+\end{tabularx}
 
-\section{Examples}
+\paragraph{Example Request:}
+\begin{lstlisting}[language=json, caption=Example Request]
+{
+    "language": "python",
+    "code": "print('Hello, World!')",
+    "stdin": "",
+    "timelimit": 5,
+    "memorylimit": 128
+}
+\end{lstlisting}
 
-\subsection{Example 1: Successful Python Execution}
-\begin{lstlisting}[language=Python]
-from good_one import execute_code
+\subsubsection*{Response Payload}
+\begin{tabularx}{\textwidth}{|l|l|X|}
+    \hline
+    \textbf{Field} & \textbf{Type} & \textbf{Description} \\
+    \hline
+    `success` & boolean & `true` if the code executed successfully, `false` otherwise. \\
+    \hline
+    `stdout` & string & The standard output of the code. \\
+    \hline
+    `stderr` & string & The standard error of the code. \\
+    \hline
+    `err` & string & A high-level error message (e.g., "Compilation Error", "Time Limit Exceeded"). \\
+    \hline
+    `timetaken` & float & The time taken for the code to execute in seconds. \\
+    \hline
+    `memorytaken` & float & The memory consumed by the code in megabytes. \\
+    \hline
+\end{tabularx}
+
+\paragraph{Example Response (Success):}
+\begin{lstlisting}[language=json, caption=Example Success Response]
+{
+    "success": true,
+    "stdout": "Hello, World!\n",
+    "stderr": "",
+    "err": "",
+    "timetaken": 0.01,
+    "memorytaken": 7.6
+}
+\end{lstlisting}
+
+\paragraph{Example Response (Error):}
+\begin{lstlisting}[language=json, caption=Example Error Response]
+{
+    "success": false,
+    "stdout": "",
+    "stderr": "Traceback (most recent call last):\n  File \"/sandbox/temp/solution.py\", line 1, in <module>\n    1 / 0\nZeroDivisionError: division to zero\nCommand exited with non-zero status 1",
+    "err": "Runtime Error (Exit Code: 1)",
+    "timetaken": 0.02,
+    "memorytaken": 7.5
+}
+\end{lstlisting}
+
+\section*{Supported Languages}
+\begin{itemize}
+    \item C (`c`)
+    \item C++ (`c++`)
+    \item Python (`python`)
+\end{itemize}
+
+\paragraph{Example Response (Error):}
+\begin{lstlisting}[language=json, caption=Example Error Response]
+{
+    "success": false,
+    "stdout": "",
+    "stderr": "Traceback (most recent call last):\n  File \"/sandbox/temp/solution.py\", line 1, in <module>\n    1 / 0\nZeroDivisionError: division to zero\nCommand exited with non-zero status 1",
+    "err": "Runtime Error (Exit Code: 1)",
+    "timetaken": 0.02,
+    "memorytaken": 7.5
+}
+\end{lstlisting}
+
+\subsubsection*{How to Interact with the API}
+
+This section provides examples of how to interact with the `/api/execute` endpoint using various tools and programming languages.
+
+\paragraph{Using cURL:}
+\begin{lstlisting}[language=bash, caption=cURL Example]
+curl -X POST -H "Content-Type: application/json" \
+     -d "{\"language\": \"python\", \"code\": \"print('Hello from cURL!')\"}" \
+     http://127.0.0.1:5000/api/execute
+\end{lstlisting}
+
+\paragraph{Using Python `requests` library:}
+\begin{lstlisting}[language=python, caption=Python Requests Example]
+import requests
 import json
 
-python_code = """
-import sys
-name = sys.stdin.readline()
-print(f"Hello, {name.strip()}!")
-"""
-
-result = execute_code(
-    language='python',
-    code=python_code,
-    stdin='World',
-    time_limit_s=5,
-    memory_limit_mb=128
-)
-
-print(json.dumps(result, indent=2))
-\end{lstlisting}
-
-\textbf{Output:}
-\begin{lstlisting}[language=json]
-{
-  "stdout": "Hello, World!",
-  "stderr": "",
-  "err": "",
-  "timetaken": 0.0,
-  "memorytaken": 3.68359375,
-  "success": true
+url = "http://127.0.0.1:5000/api/execute"
+headers = {"Content-Type": "application/json"}
+payload = {
+    "language": "python",
+    "code": "print('Hello from Python requests!')"
 }
+
+response = requests.post(url, headers=headers, data=json.dumps(payload))
+print(response.json())
 \end{lstlisting}
 
-\subsection{Example 2: C++ Code with a Runtime Error}
-\begin{lstlisting}[language=Python]
-from good_one import execute_code
-import json
+\paragraph{Using JavaScript (Fetch API):}
+\begin{lstlisting}[language=javascript, caption=JavaScript Fetch Example]
+const url = "http://127.0.0.1:5000/api/execute";
+const payload = {
+    language: "python",
+    code: "print('Hello from JavaScript Fetch!')"
+};
 
-cpp_code = """
-#include <iostream>
-#include <vector>
-int main() {
-    std::vector<int> v;
-    std::cout << v.at(10); // This will throw an exception
-    return 0;
+fetch(url, {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json"
+    },
+    body: JSON.stringify(payload)
+})
+.then(response => response.json())
+.then(data => console.log(data))
+.catch(error => console.error('Error:', error));
+\end{lstlisting}
+
+\paragraph{Using React with Axios:}
+\begin{lstlisting}[language=javascript, caption=React with Axios Example]
+import React, { useState } from 'react';
+import axios from 'axios';
+
+function CodeExecutor() {
+    const [output, setOutput] = useState(null);
+
+    const executeCode = async () => {
+        const payload = {
+            language: "python",
+            code: "print('Hello from React with Axios!')"
+        };
+        try {
+            const response = await axios.post('http://127.0.0.1:5000/api/execute', payload);
+            setOutput(response.data);
+        } catch (error) {
+            console.error('Error executing code:', error);
+            setOutput({ error: error.message });
+        }
+    };
+
+    return (
+        <div>
+            <button onClick={executeCode}>Execute Code</button>
+            {output && <pre>{JSON.stringify(output, null, 2)}</pre>}
+        </div>
+    );
 }
-"""
 
-result = execute_code(language='c++', code=cpp_code, stdin='', time_limit_s=5, memory_limit_mb=128)
-
-print(json.dumps(result, indent=2))
+export default CodeExecutor;
 \end{lstlisting}
 
-\textbf{Output:}
-\begin{lstlisting}[language=json]
-{
-  "stdout": "",
-  "stderr": "",
-  "err": "Runtime Error (Exit Code: 134)",
-  "timetaken": 0.0,
-  "memorytaken": 0.0,
-  "success": false
+\paragraph{Using React without Axios (Fetch API):}
+\begin{lstlisting}[language=javascript, caption=React without Axios Example]
+import React, { useState } from 'react';
+
+function CodeExecutor() {
+    const [output, setOutput] = useState(null);
+
+    const executeCode = async () => {
+        const payload = {
+            language: "python",
+            code: "print('Hello from React without Axios!')"
+        };
+        try {
+            const response = await fetch('http://127.0.0.1:5000/api/execute', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(payload),
+            });
+            const data = await response.json();
+            setOutput(data);
+        } catch (error) {
+            console.error('Error executing code:', error);
+            setOutput({ error: error.message });
+        }
+    };
+
+    return (
+        <div>
+            <button onClick={executeCode}>Execute Code</button>
+            {output && <pre>{JSON.stringify(output, null, 2)}</pre>}
+        </div>
+    );
 }
+
+export default CodeExecutor;
 \end{lstlisting}
 
-\section{API Reference}
-
-\subsection{\texttt{execute\_code()}}
-\begin{table}[h!]
-    \centering
-    \begin{tabularx}{\textwidth}{|l|X|l|}
-        \hline
-        \textbf{Argument} & \textbf{Description} & \textbf{Default Value} \\
-        \hline
-        \texttt{language} & The programming language (`c`, `c++`, `python`). & \texttt{'python'} \\
-        \hline
-        \texttt{code} & The source code to execute. & \texttt{"print(\dots{})"} \\
-        \hline
-        \texttt{stdin} & The standard input for the code. & \texttt{''} \\
-        \hline
-        \texttt{time\_limit\_s} & The time limit in seconds. & \texttt{2} \\
-        \hline
-        \texttt{memory\_limit\_mb} & The memory limit in megabytes. & \texttt{1024} \\
-        \hline
-    \end{tabularx}
-\end{table}
-
-\textbf{Returns:} A dictionary containing the execution results with the following keys:
+\section*{Supported Languages}
 \begin{itemize}
-    \item \texttt{stdout} (str): The standard output of the code.
-    \item \texttt{stderr} (str): The standard error of the code.
-    \item \texttt{err} (str): An error message if an error occurred.
-    \item \texttt{timetaken} (float): The time taken for the code to execute in seconds.
-    \item \texttt{memorytaken} (float): The memory used by the code in megabytes.
-    \item \texttt{success} (bool): Whether the code executed successfully.
+    \item C (`c`)
+    \item C++ (`c++`)
+    \item Python (`python`)
 \end{itemize}
 
-\section{How It Works}
-The core logic is in the \texttt{execute\_code} function within \texttt{good\_one.py}. Here's a breakdown of the process:
-\begin{enumerate}
-    \item \textbf{Input Validation:} Checks if the requested programming language is supported.
-    \item \textbf{Docker Setup:}
-    \begin{itemize}
-        \item Verifies that Docker is running.
-        \item Checks if the required Docker image (\texttt{sandbox-image:latest}) exists.
-        \item If the image is not found, it builds it dynamically from a simple \texttt{Dockerfile} definition.
-    \end{itemize}
-    \item \textbf{File Preparation:}
-    \begin{itemize}
-        \item Creates a temporary directory on the host machine.
-        \item Saves the user's source code and standard input to files within this directory.
-    \end{itemize}
-    \item \textbf{Container Management:}
-    \begin{itemize}
-        \item Starts a detached Docker container from the \texttt{sandbox-image}.
-        \item Copies the source code and input files into the container.
-    \end{itemize}
-    \item \textbf{Code Compilation (for C/C++):}
-    \begin{itemize}
-        \item If the language is C or C++, it compiles the code inside the container using \texttt{gcc} or \texttt{g++}.
-        \item If compilation fails, it returns a "Compilation Error."
-    \end{itemize}
-    \item \textbf{Code Execution:}
-    \begin{itemize}
-        \item Executes the compiled binary (for C/C++) or the Python script.
-        \item The execution is wrapped with \texttt{/usr/bin/time -v} to measure resource usage and \texttt{timeout} to enforce the time limit.
-    \end{itemize}
-    \item \textbf{Result Parsing:}
-    \begin{itemize}
-        \item Captures the standard output, standard error, and exit code of the process.
-        \item Parses the output of \texttt{/usr/bin/time -v} to extract the execution time and memory consumption.
-        \item Determines the final status based on the exit code (e.g., exit code 124 indicates a timeout).
-    \end{itemize}
-    \item \textbf{Cleanup:}
-    \begin{itemize}
-        \item Stops and removes the Docker container.
-        \item Deletes the temporary directory from the host.
-    \end{itemize}
-\end{enumerate}
 
-\section{To-Do / Improvements}
-\begin{itemize}[label={$\square$}]
-    \item Add support for more languages (e.g., Java, Go, Rust).
-    \item Implement a more robust queueing system for handling multiple submissions.
-    \item Enhance security by running the code as a non-root user inside the container.
-    \item Improve the accuracy of resource measurement.
-    \item Create a REST API wrapper around the execution logic.
-    \item Add more comprehensive unit and integration tests.
-    \item Parameterize the Docker image name and other constants.
+\section*{How to Run}
+
+\subsection*{1. Installation}
+First, make sure you have Docker installed and running.
+
+Then, install the required Python packages using pip:
+\begin{lstlisting}[language=bash, caption=Installation Command]
+# Make sure you are in the project root directory
+# and you have activated your virtual environment
+
+pip install -r requirements.txt
+\end{lstlisting}
+
+\subsection*{2. Running the Application}
+To start the Flask application, run the following command:
+\begin{lstlisting}[language=bash, caption=Run Application Command]
+python app.py
+\end{lstlisting}
+The server will start on `http://127.0.0.1:5000`.
+
+\section*{Core Python Files}
+
+This section outlines the main Python files that constitute the Code Execution Engine project.
+
+\subsection*{`app.py`}
+This is the main Flask application file. It sets up the `/api/execute` endpoint, handles incoming JSON requests, extracts code execution parameters (`code`, `language`, `stdin`, `timelimit`, `memorylimit`), and then calls the `execute\_code` function from `execute.py`. It also configures CORS (Cross-Origin Resource Sharing) and returns the execution result as a JSON response.
+
+\subsection*{`execute.py`}
+This file contains the core logic for secure code execution within Docker containers. The `execute\_code` function performs the following key operations:
+\begin{itemize}
+    \item Validates the programming language provided.
+    \item Checks for Docker availability and builds a `code-runner-image` if it doesn't exist.
+    \item Uses temporary directories on the host to store user code and input files.
+    \item Starts a Docker container in detached mode.
+    \item Copies the code and input files into the container.
+    \item Compiles C/C++ code if the language requires it.
+    \item Executes the code within the Docker container, enforcing specified time and memory limits using `timeout` and `/usr/bin/time`.
+    \item Parses the execution output, including standard output (`stdout`), standard error (`stderr`), time taken (`timetaken`), and memory consumed (`memorytaken`).
+    \item Determines the success or failure of the execution, identifying issues like Time Limit Exceeded, Memory Limit Exceeded, Runtime Errors, or Compilation Errors.
+    \item Ensures proper cleanup of the Docker container after execution.
 \end{itemize}
 
-\section{Contributing}
-Contributions are welcome! Please feel free to submit a pull request.
+\subsection*{`run\_single\_test.py`}
+This is a utility script primarily used for development and debugging. It allows developers to run a specific unit test (`test_fibonacci\_performance` from `TestCodeExecution` in `tests.test_execution`) without executing the entire test suite. It is not part of the application's core runtime.
 
-\section{Authors}
+\subsection*{`tests/test_api.py`}
+This file contains integration tests for the Flask API. It uses the `unittest` framework to:
+\begin{itemize}
+    \item Start and stop the Flask development server as a background process before and after tests, respectively.
+    \item Send POST requests to the `/api/execute` endpoint.
+    \item Assert the HTTP status code and the content of the JSON responses.
+    \item Cover various scenarios, including successful executions, compilation errors, and performance tests across different supported languages (Python, C, C++).
+\end{itemize}
+
+\subsection*{`tests/test_execution.py`}
+This file contains unit tests for the `execute\_code` function, directly testing the core code execution logic without involving the Flask API. It uses the `unittest` framework and includes a `run\_test` helper function for detailed output. The tests cover a comprehensive range of scenarios, including:
+\begin{itemize}
+    \item Basic "Hello World" executions for Python, C, and C++.
+    \item Handling of multi-line standard input.
+    \item Time Limit Exceeded (TLE) scenarios for all supported languages.
+    \item Memory Limit Exceeded (MLE) scenarios for all supported languages.
+    \item Various Runtime Errors, such as division by zero and segmentation faults.
+    \item Compilation Errors.
+    \item Performance-related tests (e.g., Fibonacci sequence calculation).
+\end{itemize}
+
+\section*{How to Run Tests}
+
+The project comes with a comprehensive test suite to ensure everything is working correctly. For detailed information on running and understanding the tests, please refer to the \href{tests/README.md}{Tests README}.
+
+\section*{Tests}
+
+This directory contains the test suite for the Code Execution Engine. The tests are divided into two main categories:
+
+\subsection*{1. Unit Tests}
+\begin{itemize}
+    \item \textbf{File:} `test\_execution.py`
+    \item \textbf{Description:} These tests directly invoke the `execute\_code` function from `execute.py`. They are designed to verify the core logic of the code execution engine, including language support, resource limits, and error handling, without involving the Flask API.
+    \item \textbf{How to Run:}
+    \begin{lstlisting}[language=bash, caption=Run Unit Tests]
+python -m unittest tests/test_execution.py
+    \end{lstlisting}
+\end{itemize}
+
+\subsection*{2. API Tests}
+\begin{itemize}
+    \item \textbf{File:} `test\_api.py`
+    \item \textbf{Description:} These tests interact with the Flask API endpoint (`/api/execute`). They verify the end-to-end functionality of the system, including the Flask application, request/response handling, and integration with the code execution engine. The API tests automatically start and stop the Flask development server.
+    \item \textbf{How to Run:}
+    \begin{lstlisting}[language=bash, caption=Run API Tests]
+python -m unittest tests/test_api.py
+    \end{lstlisting}
+\end{itemize}
+
+\section*{Credits and Contributions}
+
+This project was developed by Lohit P Talavar.
+
+\subsection*{Authors}
+
+We welcome contributions! If you'd like to contribute, please refer to our `CONTRIBUTING.md` (if available) or open an issue/pull request on the GitHub repository.
+
+Here are some of the key Authors to this project:
 \begin{itemize}
     \item \href{https://github.com/lohitpt252003}{Lohit P Talavar}
-    \item \href{https://github.com/adarshmishra121}{Adarsh Mishra}
+    \item \href{https://github.com/adarshmishra121}{Adarsh MIshra}
     \item \href{https://github.com/MeenaPriyanshi}{Priyanshi Meena}
+    % Add more Authors as needed
 \end{itemize}
 
-\section{License}
-This project is licensed under the MIT License. See the LICENSE file for details.
+\section*{How to Get the Repository}
 
-\section{Credits}
-\begin{itemize}
-    \item Python
-    \item Docker
-    \item Linux (Ubuntu)
-\end{itemize}
+To get a local copy of this project, you can clone the repository using Git:
+\begin{lstlisting}[language=bash, caption=Clone Repository]
+git clone https://github.com/lohitpt252003/judge-image-for-annaforces.git
+cd judge-image-for-annaforces
+\end{lstlisting}
+
+% Replace `https://github.com/your-username/your-repository-name.git` with the actual URL of this GitHub repository.
 
 \end{document}
+

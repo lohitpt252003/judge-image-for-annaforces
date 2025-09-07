@@ -1,187 +1,132 @@
-# Judge Image for Annaforces
+# Code Execution Engine
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+## Project Overview
 
-A secure and isolated environment for executing untrusted code, primarily for use in competitive programming platforms or online judges. It uses Docker to create a sandbox that restricts resource usage (CPU time, memory) and prevents malicious code from affecting the host system.
+This project is a simple and robust code execution engine built with Flask and Docker. It provides a secure environment to execute code in different languages with resource constraints (time and memory limits).
 
 ## Features
 
-- **Language Support:** Executes code written in C, C++, and Python.
-- **Resource Limiting:** Enforces time and memory limits on code execution.
-- **Secure Sandboxing:** Uses Docker containers to isolate the execution environment.
-- **Detailed Results:** Provides detailed information about the execution, including:
-  - Standard output and standard error.
-  - Execution time and memory usage.
-  - Status (Success, Compilation Error, Runtime Error, Time Limit Exceeded, Memory Limit Exceeded).
+- **Secure Execution:** Code is executed in an isolated Docker container to prevent any harm to the host system.
+- **Language Support:** Supports C, C++, and Python.
+- **Resource Limits:** Enforces time and memory limits on code execution.
+- **Simple API:** A single API endpoint to submit code for execution.
+- **Comprehensive Test Suite:** Includes unit and API tests to ensure reliability.
 
-## Getting Started
+## API Endpoint
 
-### Prerequisites
+### `/api/execute`
 
-- **Docker:** You must have Docker installed and running on your system.
+This is the main endpoint to submit code for execution.
 
-### Installation
+- **Method:** `POST`
+- **Content-Type:** `application/json`
 
-1.  Clone the repository:
-    ```bash
-    git clone https://github.com/lohitpt252003/judge-image-for-annaforces.git
-    ```
-2.  Navigate to the project directory:
-    ```bash
-    cd judge-image-for-annaforces
-    ```
+#### Request Payload
 
-## Examples
+| Field         | Type    | Required | Description                                      |
+|---------------|---------|----------|--------------------------------------------------|
+| `language`    | string  | Yes      | The programming language (`c`, `c++`, `python`).   |
+| `code`        | string  | Yes      | The source code to execute.                      |
+| `stdin`       | string  | No       | Standard input for the code. Defaults to empty.  |
+| `timelimit`   | integer | No       | Time limit in seconds. Defaults to 2.            |
+| `memorylimit` | integer | No       | Memory limit in megabytes. Defaults to 1024.     |
 
-Here are some examples of how to use the `execute_code` function.
-
-### Example 1: Successful Python Execution
-
-```python
-from good_one import execute_code
-import json
-
-python_code = """
-import sys
-name = sys.stdin.readline()
-print(f"Hello, {name.strip()}!")
-"""
-
-result = execute_code(
-    language='python',
-    code=python_code,
-    stdin='World',
-    time_limit_s=5,
-    memory_limit_mb=128
-)
-
-print(json.dumps(result, indent=2))
-```
-
-**Output:**
+**Example Request:**
 
 ```json
 {
-  "stdout": "Hello, World!",
-  "stderr": "",
-  "err": "",
-  "timetaken": 0.0,
-  "memorytaken": 3.68359375,
-  "success": true
+    "language": "python",
+    "code": "print('Hello, World!')",
+    "stdin": "",
+    "timelimit": 5,
+    "memorylimit": 128
 }
 ```
 
-### Example 2: C++ Code with a Runtime Error
+#### Response Payload
 
-```python
-from good_one import execute_code
-import json
+The API returns a JSON object with the execution results.
 
-cpp_code = """
-#include <iostream>
-#include <vector>
-int main() {
-    std::vector<int> v;
-    std::cout << v.at(10); // This will throw an exception
-    return 0;
-}
-"""
+| Field         | Type    | Description                                                                 |
+|---------------|---------|-----------------------------------------------------------------------------|
+| `success`     | boolean | `true` if the code executed successfully, `false` otherwise.                |
+| `stdout`      | string  | The standard output of the code.                                            |
+| `stderr`      | string  | The standard error of the code.                                             |
+| `err`         | string  | A high-level error message (e.g., "Compilation Error", "Time Limit Exceeded"). |
+| `timetaken`   | float   | The time taken for the code to execute in seconds.                          |
+| `memorytaken` | float   | The memory consumed by the code in megabytes.                               |
 
-result = execute_code(language='c++', code=cpp_code, stdin='', time_limit_s=5, memory_limit_mb=128)
-
-print(json.dumps(result, indent=2))
-```
-
-**Output:**
+**Example Response (Success):**
 
 ```json
 {
-  "stdout": "",
-  "stderr": "",
-  "err": "Runtime Error (Exit Code: 134)",
-  "timetaken": 0.0,
-  "memorytaken": 0.0,
-  "success": false
+    "success": true,
+    "stdout": "Hello, World!\n",
+    "stderr": "",
+    "err": "",
+    "timetaken": 0.01,
+    "memorytaken": 7.6
 }
 ```
 
-## API Reference
+**Example Response (Error):**
 
-### `execute_code()`
+```json
+{
+    "success": false,
+    "stdout": "",
+    "stderr": "Traceback (most recent call last):\n  File \"/sandbox/temp/solution.py\", line 1, in <module>\n    1 / 0\nZeroDivisionError: division by zero\nCommand exited with non-zero status 1",
+    "err": "Runtime Error (Exit Code: 1)",
+    "timetaken": 0.02,
+    "memorytaken": 7.5
+}
+```
 
-| Argument          | Description                                         | Default Value                                       |
-| -----------------| --------------------------------------------------- | --------------------------------------------------- |
-| `language`        | The programming language (`c`, `c++`, `python`).      | `'python'`                                          |
-| `code`            | The source code to execute.                         | "print(\"this is test code\nsubmit ur own code, this is the default code\")" |
-| `stdin`           | The standard input for the code.                    | `''`                                                |
-| `time_limit_s`    | The time limit in seconds.                          | `2`                                                 |
-| `memory_limit_mb` | The memory limit in megabytes.                      | `1024`                                              |
+## Supported Languages
 
-**Returns:**
+- C (`c`)
+- C++ (`c++`)
+- Python (`python`)
 
-A dictionary containing the execution results with the following keys:
+## How to Run
 
--   `stdout` (str): The standard output of the code.
--   `stderr` (str): The standard error of the code.
--   `err` (str): An error message if an error occurred.
--   `timetaken` (float): The time taken for the code to execute in seconds.
--   `memorytaken` (float): The memory used by the code in megabytes.
--   `success` (bool): Whether the code executed successfully.
+### 1. Installation
 
-## How It Works
+First, make sure you have Docker installed and running.
 
-The core logic is in the `execute_code` function within `good_one.py`. Here's a breakdown of the process:
+Then, install the required Python packages using pip:
 
-1.  **Input Validation:** Checks if the requested programming language is supported.
-2.  **Docker Setup:**
-    -   Verifies that Docker is running.
-    -   Checks if the required Docker image (`sandbox-image:latest`) exists.
-    -   If the image is not found, it builds it dynamically from a simple `Dockerfile` definition.
-3.  **File Preparation:**
-    -   Creates a temporary directory on the host machine.
-    -   Saves the user's source code and standard input to files within this directory.
-4.  **Container Management:**
-    -   Starts a detached Docker container from the `sandbox-image`.
-    -   Copies the source code and input files into the container.
-5.  **Code Compilation (for C/C++):**
-    -   If the language is C or C++, it compiles the code inside the container using `gcc` or `g++`.
-    -   If compilation fails, it returns a "Compilation Error."
-6.  **Code Execution:**
-    -   Executes the compiled binary (for C/C++) or the Python script.
-    -   The execution is wrapped with `/usr/bin/time -v` to measure resource usage and `timeout` to enforce the time limit.
-7.  **Result Parsing:**
-    -   Captures the standard output, standard error, and exit code of the process.
-    -   Parses the output of `/usr/bin/time -v` to extract the execution time and memory consumption.
-    -   Determines the final status based on the exit code (e.g., exit code 124 indicates a timeout).
-8.  **Cleanup:**
-    -   Stops and removes the Docker container.
-    -   Deletes the temporary directory from the host.
+```bash
+# Make sure you are in the project root directory
+# and you have activated your virtual environment
 
-## To-Do / Improvements
+pip install -r requirements.txt
+```
 
-- [ ] Add support for more languages (e.g., Java, Go, Rust).
-- [ ] Implement a more robust queueing system for handling multiple submissions.
-- [ ] Enhance security by running the code as a non-root user inside the container.
-- [ ] Improve the accuracy of resource measurement.
-- [ ] Create a REST API wrapper around the execution logic.
-- [ ] Add more comprehensive unit and integration tests.
-- [ ] Parameterize the Docker image name and other constants.
+### 2. Running the Application
 
-## Contributing
+To start the Flask application, run the following command:
 
-Contributions are welcome! Please feel free to submit a pull request.
+```bash
+python app.py
+```
 
-## Authors
+The server will start on `http://127.0.0.1:5000`.
 
--   [Lohit P Talavar](https://github.com/lohitpt252003)
--   [Adarsh Mishra](https://github.com/adarshmishra121)
--   [Priyanshi Meena](https://github.com/MeenaPriyanshi)
+## How to Run Tests
 
-## License
+The project comes with a comprehensive test suite to ensure everything is working correctly. For detailed information on running and understanding the tests, please refer to the [Tests README](tests/README.md).
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+## Credits and Contributions
 
-## Credits
-- Python
-- Docker
-- Linux (Ubuntu)
+This project was developed by Lohit P Talavar.
+
+### Authors
+
+We welcome contributions! If you'd like to contribute, please refer to our `CONTRIBUTING.md` (if available) or open an issue/pull request on the GitHub repository.
+
+Here are some of the key Authors to this project:
+
+*   [Lohit P Talavar](https://github.com/lohitpt252003)
+*   [Adarsh Mishra](https://github.com/adarshmishra121)
+*   [Priyanshi Meena](https://github.com/MeenaPriyanshi)
