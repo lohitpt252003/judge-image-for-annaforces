@@ -46,7 +46,7 @@ This project is a simple and robust code execution engine built with Flask and D
     \item \textbf{Secure Execution:} Code is executed in an isolated Docker container to prevent any harm to the host system.
     \item \textbf{Language Support:} Supports C, C++, and Python.
     \item \textbf{Resource Limits:} Enforces time and memory limits on code execution.
-    \item \textbf{Simple API:} A single API endpoint to submit code for execution.
+    \item \textbf{Custom Output Validation:} Supports custom validator scripts to check the correctness of the user's output.
     \item \textbf{Comprehensive Test Suite:} Includes unit and API tests to ensure reliability.
 \end{itemize}
 
@@ -118,15 +118,60 @@ This is the main endpoint to submit code for execution.
 }
 \end{lstlisting}
 
-\paragraph{Example Response (Error):}
-\begin{lstlisting}[language=json, caption=Example Error Response]
+\subsection*{`/api/validate`}
+This endpoint validates a user's output using a custom validator script.
+\begin{itemize}
+    \item \textbf{Method:} `POST`
+    \item \textbf{Content-Type:} `application/json`
+\end{itemize}
+
+\subsubsection*{Request Payload}
+\begin{tabularx}{\textwidth}{|l|l|l|X|}
+    \hline
+    \textbf{Field} & \textbf{Type} & \textbf{Required} & \textbf{Description} \\
+    \hline
+    `validator_language` & string & Yes & The language of the validator script (`python`). \\
+    \hline
+    `validator_code` & string & Yes & The source code of the validator script. \\
+    \hline
+    `user_output` & string & Yes & The `stdout` from the user's code execution. \\
+    \hline
+    `test_input` & string & Yes & The original `stdin` for the test case. \\
+    \hline
+\end{tabularx}
+
+\paragraph{Example Request:}
+\begin{lstlisting}[language=json, caption=Example Validator Request]
 {
-    "success": false,
-    "stdout": "",
-    "stderr": "Traceback (most recent call last):\n  File \"/sandbox/temp/solution.py\", line 1, in <module>\n    1 / 0\nZeroDivisionError: division to zero\nCommand exited with non-zero status 1",
-    "err": "Runtime Error (Exit Code: 1)",
-    "timetaken": 0.02,
-    "memorytaken": 7.5
+    "validator_language": "python",
+    "validator_code": "import sys\n\nuser_output_file = sys.argv[1]\ntest_input_file = sys.argv[2]\n\nwith open(user_output_file, \"r\") as f:\n    user_output = f.read().strip()\n\nif user_output == \"hello\":\n    print(\"Accepted\")\nelse:\n    print(\"Wrong Answer\")",
+    "user_output": "hello",
+    "test_input": ""
+}
+\end{lstlisting}
+
+\subsubsection*{Response Payload}
+\begin{tabularx}{\textwidth}{|l|l|X|}
+    \hline
+    \textbf{Field} & \textbf{Type} & \textbf{Description} \\
+    \hline
+    `success` & boolean & `true` if the validator executed successfully. \\
+    \hline
+    `stdout` & string & The `stdout` of the validator (e.g., "Accepted"). \\
+    \hline
+    `stderr` & string & The `stderr` of the validator. \\
+    \hline
+    `err` & string & A high-level error message (e.g., "Validator Runtime Error"). \\
+    \hline
+\end{tabularx}
+
+\paragraph{Example Response (Success):}
+\begin{lstlisting}[language=json, caption=Example Validator Success Response]
+{
+    "success": true,
+    "stdout": "Accepted\n",
+    "stderr": "",
+    "err": ""
 }
 \end{lstlisting}
 
@@ -157,7 +202,7 @@ This section provides examples of how to interact with the `/api/execute` endpoi
 \begin{lstlisting}[language=bash, caption=cURL Example]
 curl -X POST -H "Content-Type: application/json" \
      -d "{\"language\": \"python\", \"code\": \"print('Hello from cURL!')\"}" \
-     http://127.0.0.1:5000/api/execute
+http://127.0.0.1:5002/api/execute
 \end{lstlisting}
 
 \paragraph{Using Python `requests` library:}
@@ -294,7 +339,7 @@ To start the Flask application, run the following command:
 \begin{lstlisting}[language=bash, caption=Run Application Command]
 python app.py
 \end{lstlisting}
-The server will start on `http://127.0.0.1:5000`.
+The server will start on `http://127.0.0.1:5002`.
 
 \section*{Core Python Files}
 
@@ -317,6 +362,9 @@ This file contains the core logic for secure code execution within Docker contai
     \item Determines the success or failure of the execution, identifying issues like Time Limit Exceeded, Memory Limit Exceeded, Runtime Errors, or Compilation Errors.
     \item Ensures proper cleanup of the Docker container after execution.
 \end{itemize}
+
+\subsection*{`validate.py`}
+This file contains the logic for validating a user's output against a custom validator script. The `validate\_output` function in this file is called by the `/api/validate` endpoint. It runs the validator script in a Docker container, passing the user's output and the original test input as arguments, and returns the verdict from the validator.
 
 \subsection*{`run\_single\_test.py`}
 This is a utility script primarily used for development and debugging. It allows developers to run a specific unit test (`test_fibonacci\_performance` from `TestCodeExecution` in `tests.test_execution`) without executing the entire test suite. It is not part of the application's core runtime.

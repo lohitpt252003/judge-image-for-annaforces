@@ -9,7 +9,7 @@ This project is a simple and robust code execution engine built with Flask and D
 - **Secure Execution:** Code is executed in an isolated Docker container to prevent any harm to the host system.
 - **Language Support:** Supports C, C++, and Python.
 - **Resource Limits:** Enforces time and memory limits on code execution.
-- **Simple API:** A single API endpoint to submit code for execution.
+- **Custom Output Validation:** Supports custom validator scripts to check the correctness of the user's output.
 - **Comprehensive Test Suite:** Includes unit and API tests to ensure reliability.
 
 ## API Endpoint
@@ -82,6 +82,55 @@ The API returns a JSON object with the execution results.
 }
 ```
 
+### `/api/validate`
+
+This endpoint validates a user's output using a custom validator script.
+
+- **Method:** `POST`
+- **Content-Type:** `application/json`
+
+#### Request Payload
+
+| Field                | Type   | Required | Description                                          |
+| -------------------- | ------ | -------- | ---------------------------------------------------- |
+| `validator_language` | string | Yes      | The language of the validator script (`python`).     |
+| `validator_code`     | string | Yes      | The source code of the validator script.             |
+| `user_output`        | string | Yes      | The `stdout` from the user's code execution.         |
+| `test_input`         | string | Yes      | The original `stdin` for the test case.              |
+
+**Example Request:**
+
+```json
+{
+    "validator_language": "python",
+    "validator_code": "import sys\n\nuser_output_file = sys.argv[1]\ntest_input_file = sys.argv[2]\n\nwith open(user_output_file, \"r\") as f:\n    user_output = f.read().strip()\n\nif user_output == \"hello\":\n    print(\"Accepted\")\nelse:\n    print(\"Wrong Answer\")",
+    "user_output": "hello",
+    "test_input": ""
+}
+```
+
+#### Response Payload
+
+The API returns a JSON object with the validation results.
+
+| Field    | Type    | Description                                         |
+| -------- | ------- | --------------------------------------------------- |
+| `success`  | boolean | `true` if the validator executed successfully.      |
+| `stdout`   | string  | The `stdout` of the validator (e.g., "Accepted").   |
+| `stderr`   | string  | The `stderr` of the validator.                      |
+| `err`      | string  | A high-level error message (e.g., "Validator Runtime Error"). |
+
+**Example Response (Success):**
+
+```json
+{
+    "success": true,
+    "stdout": "Accepted\n",
+    "stderr": "",
+    "err": ""
+}
+```
+
 ## Supported Languages
 
 - C (`c`)
@@ -111,7 +160,7 @@ To start the Flask application, run the following command:
 python app.py
 ```
 
-The server will start on `http://127.0.0.1:5000`.
+The server will start on `http://127.0.0.1:5002`.
 
 ## How to Run Tests
 
