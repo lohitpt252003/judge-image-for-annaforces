@@ -84,7 +84,7 @@ The API returns a JSON object with the execution results.
 
 ### `/api/validate`
 
-This endpoint validates a user's output using a custom validator script.
+This endpoint validates a user's output using a custom validator script. A blueprint for creating new validators is available in the `DATA/blueprint/validator` directory.
 
 - **Method:** `POST`
 - **Content-Type:** `application/json`
@@ -93,7 +93,7 @@ This endpoint validates a user's output using a custom validator script.
 
 | Field                | Type   | Required | Description                                          |
 | -------------------- | ------ | -------- | ---------------------------------------------------- |
-| `validator_language` | string | Yes      | The language of the validator script (`python`).     |
+| `validator_language` | string | Yes | The language of the validator script (c, c++, python). |
 | `validator_code`     | string | Yes      | The source code of the validator script.             |
 | `user_output`        | string | Yes      | The `stdout` from the user's code execution.         |
 | `test_input`         | string | Yes      | The original `stdin` for the test case.              |
@@ -103,9 +103,9 @@ This endpoint validates a user's output using a custom validator script.
 ```json
 {
     "validator_language": "python",
-    "validator_code": "import sys\n\nuser_output_file = sys.argv[1]\ntest_input_file = sys.argv[2]\n\nwith open(user_output_file, \"r\") as f:\n    user_output = f.read().strip()\n\nif user_output == \"hello\":\n    print(\"Accepted\")\nelse:\n    print(\"Wrong Answer\")",
-    "user_output": "hello",
-    "test_input": ""
+    "validator_code": "import sys\n\ndef validate(user_output_content, test_input_content):\n    # Your validation logic here\n    # Compare user_output_content with expected output derived from test_input_content\n    # Print \"Accepted\" or \"Wrong Answer\"\n    if user_output_content.strip() == test_input_content.strip():\n        print(\"Accepted\")\n    else:\n        print(\"Wrong Answer\")\n\nif __name__ == \"__main__\":\n    user_output_file = sys.argv[1]\n    test_input_file = sys.argv[2]\n    with open(user_output_file, 'r') as f:\n        user_output = f.read()\n    with open(test_input_file, 'r') as f:\n        test_input = f.read()\n    validate(user_output, test_input)\n",
+    "user_output": "expected output",
+    "test_input": "input data"
 }
 ```
 
