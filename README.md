@@ -154,14 +154,45 @@ pip install -r requirements.txt
 
 ### 2. Running the Application
 
-To start the Flask application, run the following command:
+To start the Flask application directly, run:
 
 ```bash
 python app.py
 ```
 
-The server will start on `http://127.0.0.1:5002`.
+The server listens on `http://127.0.0.1:5002` (container exposes port 5002).
 
+### With Docker Compose (recommended)
+
+This repository is integrated in the root `docker-compose.yml` as service `judge`:
+
+```yaml
+  judge:
+    build:
+      context: ./judge-image-for-annaforces
+      dockerfile: Dockerfile
+    container_name: annaforces-judge
+    ports:
+      - "5002:5002"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+```
+
+The socket mount allows the judge to start ephemeral sandbox containers for user code execution. Bring everything up from the repo root:
+
+```bash
+docker compose up -d --build
+```
+
+Inside the Compose network the backend reaches the judge at `http://judge:5002`.
+
+### Independent Deployment (production)
+
+- Host this service on a VM/host with Docker available so it can launch sandbox containers for user code.
+- Expose port `5002` (or place behind a reverse proxy) and secure with TLS (e.g., `https://judge.example.com`).
+- No database required; the API is stateless.
+
+Note: Many managed container platforms do not allow mounting `/var/run/docker.sock`. Prefer a VM, or run an alternative sandbox mechanism compatible with the platform.
 ## How to Run Tests
 
 The project comes with a comprehensive test suite to ensure everything is working correctly. For detailed information on running and understanding the tests, please refer to the [Tests README](tests/README.md).

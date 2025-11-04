@@ -1,0 +1,15 @@
+services:
+  judge:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: annaforces-judge
+    restart: always
+    ports:
+      - "${JUDGE_PORT:-5002}:5002"
+    environment:
+      FLASK_ENV: production
+    # Allow the judge to launch sandbox containers via the host Docker daemon
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+

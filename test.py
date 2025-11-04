@@ -1,7 +1,7 @@
 import requests
 
 # Change this to your VM public IP later, for now use localhost
-URL = "http://80.225.200.111:5000/api/execute"
+URL = "http://localhost:5002/api/execute"
 
 payload = {
     "code": "print('Hello from inside container!')",
